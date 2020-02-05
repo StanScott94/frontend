@@ -81,6 +81,8 @@ export default class AuthService {
     _checkStatus(response) {
         if (response.status >= 200 && response.status < 300) {
             return response
+        } else if (response.status == 403) {
+        	window.location.replace('/403');
         } else {
             var error = new Error(response.statusText)
             error.response = response
