@@ -7,50 +7,56 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import Create from '@material-ui/icons/Create';
 
-class UserList extends Component {
+class ExpenseList extends Component {
 	
 	constructor(){
 		super()
-		this.state = {users : []}
-		this.getUsers = this.getUsers.bind(this);
+		this.state = {expenses : []}
+		this.getExpenses = this.getExpenses.bind(this);
 		this.Auth = new AuthService();
 	}
 
 	componentDidMount(){
-		this.getUsers();
+		this.getExpenses();
 	}
 
 	render(){
-		const users = this.state.users;
+		const expenses = this.state.expenses;
 		return (
 			<ul>
-				{users.map(user => (
-					<ListItem key={user.id}>
+				{expenses.map(expense => (
+					<ListItem key={expense.id}>
 						<ListItemAvatar>
 							<Avatar>
-								<AccountCircle />
+								<MonetizationOn />
 							</Avatar>
 						</ListItemAvatar>
-						<ListItemText primary={user.username} secondary={user.firstName + " " + user.lasttName} />
+						<Grid container>
+						<ListItemText primary={expense.title} secondary={expense.description} />
+						</Grid>
+						<Grid container>
+						<ListItemText primary={expense.ammount} />
+						</Grid>
 						<ListItemSecondaryAction>
-							<IconButton edge="end" aria-label="delete">
-								<Create />
-							</IconButton>
-						</ListItemSecondaryAction>
+						<IconButton edge="end" aria-label="delete">
+							<Create />
+						</IconButton>
+					</ListItemSecondaryAction>
 					</ListItem>
 				))}
 			</ul>
 		);
 	}
 	
-    getUsers() {
-		this.Auth.fetch('/users', { method: 'GET' })
-		.then(data => {this.setState({users : data._embedded.userList}) })
+	getExpenses() {
+		this.Auth.fetch('/expenses', { method: 'GET' })
+		.then(data => {this.setState({expenses : data._embedded.expenseList}) })
     }
 }
 
-export default UserList;
+export default ExpenseList;
