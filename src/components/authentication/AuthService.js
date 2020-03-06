@@ -61,6 +61,14 @@ export default class AuthService {
     }
 
     fetch(url, options) {
+        return this.doFetch(this.domain + url, options)
+    }
+    
+    restFetch(url, options) {
+    	return this.doFetch(url, options)
+    }
+    
+    doFetch(url, options) {
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -70,10 +78,7 @@ export default class AuthService {
             headers['Authorization'] = 'Bearer ' + this.getToken()
         }
 
-        return fetch(this.domain + url, {
-            headers,
-            ...options
-        })
+        return fetch(url, { headers,  ...options })
             .then(this._checkStatus)
             .then(response => response.json())
     }

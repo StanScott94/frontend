@@ -43,13 +43,14 @@ class ExpenseList extends Component {
 						<ListItemText primary={expense.ammount} />
 						</Grid>
 						<ListItemSecondaryAction>
-						<IconButton edge="end" aria-label="delete">
+						<IconButton edge="end" aria-label="delete" onClick={() => { this.deleteExpense(expense); }}>
 							<Create />
 						</IconButton>
 					</ListItemSecondaryAction>
 					</ListItem>
 				))}
 			</ul>
+			
 		);
 	}
 	
@@ -57,6 +58,15 @@ class ExpenseList extends Component {
 		this.Auth.fetch('/expenses', { method: 'GET' })
 		.then(data => {this.setState({expenses : data._embedded.expenseList}) })
     }
+	
+	deleteExpense(expense) {
+		var url = expense['_links']['self']['href']
+		this.Auth.restFetch(url, {    
+			method: "DELETE",
+		    mode: "cors",
+		    cache: "no-cache"
+		    	})
+	}
 }
 
 export default ExpenseList;
